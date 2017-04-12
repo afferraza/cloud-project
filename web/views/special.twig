@@ -1,0 +1,106 @@
+<html>
+<head>
+  <title>Halal is Here</title>
+</head>
+<body>
+
+<h2>Item</h2>
+<div class="article-info"></div>
+<div>
+  <div id="wrapper">
+    <div id="login" class="animate form">
+      <form action="addOffer" method="post" autocomplete="on">
+        <input name="id" required type="hidden" value="{{ id }}">
+        {% if page==1 %}
+          <p>
+            <table id="dynamic_field" style="border-collapse:collapse;">
+              <tr>
+                <td>
+                  <select required="required" name="name[]" id="name" style="width:100%">
+                    {{ items|raw }}
+                  </select>
+                </td>
+                <td>
+                  <input id="qty" min="1" type="number" name="qty[]" required="required" placeholder="Quantity"/>
+                </td>
+                <td>
+                  <button type="button" name="add" id="add_item">Add</button>
+                </td>
+              </tr>
+            </table>
+          </p>
+          <p>
+            <input placeholder="Discount in %" name="discount" required="required" type="number" min="1" max="15">
+          </p>
+          <p class="login button">
+            <input name="save" type="submit" value="Save">
+            <button onclick="window.location.href='/offerMenu'">Cancel</button>
+          </p>
+        {% else %}
+          <p>
+            <table id="dynamic_field" style="border-collapse:collapse;">
+              {% set count = 1 %}
+              {% set lists = list|split('@@@') %}
+              {% for l in lists %}
+                {% if l|trim != "" %}
+                  {% set spl = l|split('###') %}
+                  <tr class="row{{ count }}">
+                    <td>
+                      <select required="required" name="name[]" id="name" style="width:100%">
+                        <option selected value="{{ spl[0] }}">{{ spl[1] }}</option>
+                        {{ items|raw }}
+                      </select>
+                    </td>
+                    <td>
+                      <input id="qty" min="1" type="number" value="{{ spl[2] }}" name="qty[]" required="required" placeholder="Quantity"/>
+                    </td>
+                    {% if count == 1 %}
+                      <td>
+                        <button type="button" name="add" id="add_item">Add</button>
+                      </td>
+                    {% else %}
+                      <td>
+                        <button type="button" name="remove" id="{{ count }}" class="btn_remove">Remove</button>
+                      </td>
+                    {% endif %}
+                  </tr>
+                  {% set count = count + 1 %}
+                {% endif %}
+              {% endfor %}
+            </table>
+          </p>
+          <p>
+            <input placeholder="Discount in %" value="{{ discount }}" name="discount" required="required" type="number" min="1" max="15">
+          </p>
+          <p class="login button">
+            <input name="save" type="submit" value="Save">
+            <button onclick="window.location.href='/offerMenu'">Cancel</button>
+          </p>
+        {% endif %}
+      </form>
+
+    </div>
+  </div>
+</div>
+</body>
+
+
+{% block javascripts %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  <script type="text/javascript">
+
+    var i = {{ itemCount }};
+    $('#add_item').click(function(){
+      i++;
+      $('#dynamic_field').append('<tr class="row'+i+'"><td><select required="required" name="name[]" id="name'+i+'" style="width:100%">{{ items|raw }}</select></td>    <td><input id="qty'+i+'" min="1" type="number" name="qty[]" required="required" placeholder="Quantity"/></td>    <td><button type="button" class="btn_remove" name="remove" id="'+i+'">Remove</button></td ></tr>');
+    });
+
+    $(document).on('click', '.btn_remove', function () {
+      var button_id = $(this).attr("id");
+      $('.row' + button_id + '').remove();
+    });
+
+  </script>
+{% endblock %}
+
+</html>

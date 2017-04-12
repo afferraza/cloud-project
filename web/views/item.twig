@@ -1,0 +1,37 @@
+<html>
+<head>
+  <title>Halal is Here</title>
+</head>
+<body>
+
+<h2>Item</h2>
+<div class="article-info"></div>
+<div>
+  <div id="wrapper">
+    <div id="login" class="animate form">
+      <form action="addItem" method="post" autocomplete="on">
+        <input name="id" required type="hidden" value="{{ id }}">
+        <p>
+          <input placeholder="Name" name="name" {{ dis }} required="required" type="text" maxlength="40" value="{{ name }}">
+        </p>
+        <p>
+          <select name="category" {{ dis }} required="required">
+            <option {{ category['kar'] }} value="1">Karahi & BBQ</option>
+            <option {{ category['bur'] }} value="2">Burger & Shawarma</option>
+          </select>
+        </p>
+        <p>
+          <input placeholder="Price Per Unit" name="price" required="required" type="number" min="10" value="{{ price }}">
+        </p>
+        <p class="login button">
+          <input name="save" type="submit" value="Save">
+          <button onclick="window.location.href='/home'">Cancel</button>
+        </p>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

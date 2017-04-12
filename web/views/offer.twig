@@ -1,0 +1,76 @@
+{% extends "layout.php" %}
+
+{% block content %}
+    <div id="body">
+      <h3>Welcome to Happy Meal Restaurant</h3>
+      <p>
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum
+        lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum
+        lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum
+      </p>
+
+      <h1 style="color: #799AC0; margin-left: 40%">Special Offers</h1>
+
+
+      {% set i = 1 %}
+      {% for d in deal %}
+        <h3 style="display: inline-block; margin-left: 5%">
+          Deal # {{ i }}
+          {% set i = i + 1 %}
+        </h3>
+        <table style="margin-left: 5%" id="special">
+          <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+          </tr>
+          {% set items = d["item"]|split('@@@') %}
+          {% for item in items %}
+            {% if item|trim != "" %}
+              {% set spl = item|split('###') %}
+              <tr>
+                <td>{{ spl[1] }}</td>
+                <td>{{ spl[2] }}</td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </table>
+        <div style="margin-left: 5%; width: 90%; display: inline-block">
+          {% if type == 1 %}
+            <form style="float: left" action="actionOffer" method="post">
+              <input type="hidden" name="id" value="{{ d["id"] }}">
+              <input name="edit" type="submit" value="Edit">
+              <input name="delete" type="submit" value="Delete">
+            </form>
+          {% endif %}
+          <strong style="float: right">
+            Total: {{ d["price"] }}
+          </strong>
+        </div>
+      {% endfor %}
+
+
+
+      <div class="clear"></div>
+
+      <div style="margin-left: 5%; display: inline-block">
+        <form action="logout" method="get">
+          <input type="submit" value="Logout">
+        </form>
+      </div>
+
+      {% if type==1 %}
+        <div style="margin-left: 1%; display: inline-block;">
+          <form action="addOffer" method="get">
+            <input type="submit" value="Add Offer">
+          </form>
+        </div>
+      {% endif %}
+
+      <div style="margin-left: 1%; display: inline-block;">
+        <form action="home" method="get">
+          <input type="submit" value="Main Menu">
+        </form>
+      </div>
+    </div>
+
+{% endblock %}
